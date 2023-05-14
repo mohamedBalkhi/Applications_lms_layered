@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Spark LMS - User Form</title>
+
+    <th:block th:replace="fragments/styles :: common"></th:block>
+
+</head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <th:block th:replace="fragments/sidemenu :: menu"></th:block>
+        <th:block th:replace="fragments/topmenu :: menu"></th:block>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 th:if="${user.id==null}">Add New User</h2>
+                            <h2 th:if="${user.id!=null}">Edit User Data</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                 th:if="${successMsg}">
+                                <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span
+                                        aria-hidden="true">×</span></button>
+                                <span th:text="*{successMsg}"></span>
+                            </div>
+                            <br/>
+                            <form class="form-horizontal form-label-left" id="member-form" method="post" th:action="@{/user/save}"
+                                  th:object="${user}">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Member Type <span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
+                                        <select class="form-control" th:field="*{role}">
+                                            <option th:each="role : ${userRoles}" th:text="${role}"
+                                                    th:value="${role}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">User Name
+                                        <span class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{username}"
+                                               type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Display
+                                        Name <span class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{displayName}"
+                                               type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{displayName}"
+                                              th:if="${#fields.hasErrors('displayName')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Password
+                                        </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{password}"
+                                               type="password">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Active
+                                    </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <select class="form-control" th:field="*{active}">
+                                            <option th:text="Active" th:value="${1}"></option>
+                                            <option th:text="Inactive" th:value="${0}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <input th:field="*{id}" th:if="${id!=null}" type="hidden"/>
+                                <input id="joiningDate" name="createdDate" th:value="${user.createdDate}?${#dates.format(user.createdDate, 'dd-MMM-yyyy')}:${#dates.format(#dates.createNow(), 'dd-MMM-yyyy')}"
+                                       type="hidden"/>
+
+                                <input  id="lastModificationDate" name="lastModifiedDate" th:value="${#dates.format(#dates.createNow(), 'dd-MMM-yyyy')}"
+                                       type="hidden"/>
+
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <th:block th:if="${id==null}">
+                                            <button class="btn btn-primary" type="reset">Reset</button>
+                                        </th:block>
+                                        <th:block th:if="${id!=null}">
+                                            <button class="btn btn-primary" id="gotoListBtn" type="button">Go to list
+                                                page
+                                            </button>
+                                        </th:block>
+                                        <button class="btn btn-success" id="saveBtn" type="button">Save</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+
+    </div>
+</div>
+
+<th:block th:replace="fragments/scripts :: common"></th:block>
+<!-- jquery.inputmask -->
+<script th:src="@{/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+<script th:src="@{/custom/js/user/form.js}"></script>
+</body>
+</html>

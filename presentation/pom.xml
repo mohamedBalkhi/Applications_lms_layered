@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.spark.lms</groupId>
+        <artifactId>spark-lms</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>presentation</artifactId>
+
+
+    <dependencies>
+        <!-- Add your module-specific dependencies here -->
+        <dependency>
+            <groupId>com.spark.lms</groupId>
+            <artifactId>lms-business</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spark.lms</groupId>
+            <artifactId>lms-data</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spark.lms</groupId>
+            <artifactId>lms-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <!--    <properties>-->
+    <!--        <maven.compiler.source>19</maven.compiler.source>-->
+    <!--        <maven.compiler.target>19</maven.compiler.target>-->
+    <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+    <!--    </properties>-->
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+</project>

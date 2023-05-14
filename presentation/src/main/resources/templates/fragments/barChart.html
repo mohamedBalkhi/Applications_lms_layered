@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="barChart">
+	<div th:if="${session.loggedInUserRole=='Admin'}" style="display: flex; flex-wrap: wrap;">
+		<div style="flex: 1 1 calc(38% - 5px); margin-right: 10px;">
+			<div class="container">
+				<h2 align="center">#Books per category</h2>
+
+				<div id="container"
+					 ></div>
+
+			</div>
+		</div>
+		<div style="flex: 1 1 calc(38% - 5px); margin-right: 10px;">
+			<div class="container">
+				<h2 align="center">#Members by gender</h2>
+				<div id="testt" ></div>
+			</div>
+		</div>
+	</div>
+
+	<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+	<script th:inline="javascript">
+		$(function(){
+			Highcharts.chart('container', {
+				chart: {
+					type: 'column',
+					backgroundColor: '#F7F7F7', // Set the background color of the chart
+					style: {
+						fontFamily: 'Times New Roman'
+				},},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: 'Details'
+				},
+				xAxis: {
+					categories: [[${keySet1}]],
+					crosshair: true
+				},
+				yAxis: {
+					min: 0,
+					max:[[${maxValue}]],
+					title: {
+						text: 'Count of books'
+					}
+				},
+				tooltip: {
+					headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+					pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+							'<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
+					footerFormat: '</table>',
+					shared: true,
+					useHTML: true
+				},
+				plotOptions: {
+					column: {
+						pointPadding: 0.2,
+						borderWidth: 0,
+						color: '#2A3F54', // Set the color of the bars
+						borderColor: '#000000', // Set the border color of the bars
+						pointWidth: 40
+					}
+
+				},
+				series: [{
+					name: 'Category',
+					data: [[${values1}]]
+				}]
+			});
+		});
+
+		Highcharts.chart('testt', {
+			chart : {
+				type : 'pie',
+				options3d : {
+					enabled : true,
+					alpha : 50,
+					beta : 0
+				},
+				backgroundColor: '#F7F7F7', // Set the background color of the chart
+				style: {
+					fontFamily: 'Times New Roman',
+					fontsize: '40px'
+				},
+			},
+			title : {
+				text : 'Result Data'
+			},
+			tooltip : {
+				pointFormat : '{series.name}: <b>{point.percentage:.0f}%</b>'
+			},plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: false
+					},
+					showInLegend: true,
+					colors : ["#2A3F54","#1ABB9C"]
+				},},
+			series : [ {
+				type : 'pie',
+				name : 'Ratio',
+				data : [ [ 'Males', [[${males}]] ], [ 'Females', [[${females}]] ]  ]
+			} ]
+		});
+	</script>
+
+</th:block>
+
+</html>

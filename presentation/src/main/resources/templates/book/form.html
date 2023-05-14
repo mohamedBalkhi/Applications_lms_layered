@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Spark LMS - Book Form</title>
+
+    <th:block th:replace="fragments/styles :: common"></th:block>
+
+</head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <th:block th:replace="fragments/sidemenu :: menu"></th:block>
+        <th:block th:replace="fragments/topmenu :: menu"></th:block>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 th:if="${book.id==null}">Add New Book</h2>
+                            <h2 th:if="${book.id!=null}">Edit Book Data</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                 th:if="${successMsg}">
+                                <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span
+                                        aria-hidden="true">×</span></button>
+                                <span th:text="*{successMsg}"></span>
+                            </div>
+                            <br/>
+                            <form class="form-horizontal form-label-left" method="post" th:action="@{/book/save}"
+                                  th:object="${book}">
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Category <span
+                                            class="required">*</span></label>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <select class="form-control" id="category-selectbox" th:field="*{category}">
+                                            <option th:each="c : ${categories}" th:short-name="${c.shortName}" th:text="${c.name}"
+                                                    th:value="${c.id}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{category}" th:if="${#fields.hasErrors('category')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tag <span
+                                            class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{tag}" type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{tag}" th:if="${#fields.hasErrors('tag')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Book Title
+                                        <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{title}" type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Authors
+                                        <span class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{authors}"
+                                               type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{authors}" th:if="${#fields.hasErrors('authors')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                           for="first-name">Publisher </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{publisher}"
+                                               type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{publisher}" th:if="${#fields.hasErrors('publisher')}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                           for="first-name">ISBN </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" th:field="*{isbn}" type="text">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 mt-5">
+                                        <span th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"></span>
+                                    </div>
+                                </div>
+
+                                <input th:field="*{id}" th:if="${id!=null}" type="hidden"/>
+                                <input th:field="*{status}" type="hidden"/>
+                                <input id="createDate" name="createDate" th:value="${book.createDate}?${#dates.format(book.createDate, 'dd-MMM-yyyy')}:${#dates.format(#dates.createNow(), 'dd-MMM-yyyy')}"
+                                       type="hidden"/>
+
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <th:block th:if="${id==null}">
+                                            <button class="btn btn-primary" id="resetBtn" type="reset">Reset</button>
+                                        </th:block>
+                                        <th:block th:if="${id!=null}">
+                                            <button class="btn btn-primary" id="gotoListBtn" type="button">Go to list
+                                                page
+                                            </button>
+                                        </th:block>
+                                        <button class="btn btn-success" type="submit">Save</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+
+    </div>
+</div>
+
+<th:block th:replace="fragments/scripts :: common"></th:block>
+<script th:src="@{/custom/js/book/form.js}"></script>
+</body>
+</html>
